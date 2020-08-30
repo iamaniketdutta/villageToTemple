@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function minimumCost(costOfPersonArray, numberOfPerson) 
+{ 
+    costOfPersonArray.sort(function(a, b){return a - b});
+    var totalCost = 0; 
+    for (var i = numberOfPerson - 1; i > 1; i -= 2) { 
+        if (i == 2) { 
+            totalCost += costOfPersonArray[2] + costOfPersonArray[0]; 
+        } 
+        else { 
+            var cost_first = costOfPersonArray[i] + costOfPersonArray[0] + 2 * costOfPersonArray[1]; 
+            var cost_second = costOfPersonArray[i] + costOfPersonArray[i - 1] + 2 * costOfPersonArray[0]; 
+            totalCost += Math.min(cost_first, cost_second); 
+        } 
+    } 
+    if (numberOfPerson == 1) { 
+        totalCost += costOfPersonArray[0]; 
+    } 
+    else { 
+        totalCost += costOfPersonArray[1]; 
+    } 
+    return totalCost; 
+}
+
+function minimumCostToReachKingdom(container, testCase) {
+    let inputElem = container.querySelectorAll("input");
+    var pTag = document.createElement("p");
+    let pTagHtml = `Minimum :<br>`;
+    var j = 1; k = 0;
+    for (var i = 0; i < testCase; i++){
+        pTagHtml += `Cost of test case#` + (i+1) + ` : ` + 
+        minimumCost(inputElem[j].value.split(" ").map(Number), parseInt(inputElem[k].value)) + `<br>`;
+        j+=2;
+        k+=2;
+        console.log(j, k)
+    }
+pTag.innerHTML = pTagHtml;
+container.appendChild(pTag);
+}
+
+function addFields(){
+            var number = document.getElementById("testCases").value;
+            var container = document.getElementById("container");
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            container.appendChild(document.createElement("br"));
+            for (i=0;i<number;i++){
+                container.appendChild(document.createTextNode("No. of person of test case#" + (i+1) + " : "));
+                var input = document.createElement("input");
+                input.type = "text";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createTextNode("Array for cost of each person of test case#" + (i+1) + " : "));
+                var input = document.createElement("input");
+                input.type = "text";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+            }
+            var button = document.createElement("button");
+button.innerHTML = "Find Minimum Cost";
+container.appendChild(button);
+button.addEventListener ("click", function() {
+  minimumCostToReachKingdom(container, number);
+});
+        }
+        
+</script>
+</head>
+<body>
+    <h1>Village to Temple!!!</h1>
+  <label for="testCases">Test Cases:</label>
+  <input type="text" id="testCases" name="testCases" value=""><br />
+<a href="#" id="filldetails" onclick="addFields()">Fill Details</a>
+    <div id="container">
+        </div>
+</body>
+</html>
